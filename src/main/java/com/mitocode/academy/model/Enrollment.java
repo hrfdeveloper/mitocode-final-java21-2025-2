@@ -17,6 +17,7 @@ import java.util.List;
 @Table(name = "enrollments", schema = "academy")
 public class Enrollment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     @Column(nullable = false, unique = true)
     private Integer id;
@@ -24,13 +25,16 @@ public class Enrollment {
     @Column(nullable = false)
     private LocalDateTime enrollmentDateTime;
 
-    @ManyToOne(targetEntity = Student.class, fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(targetEntity = Student.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
     private Student student;
 
-    @OneToMany(targetEntity = EnrollmentDetails.class, fetch = FetchType.LAZY)
-    @JoinColumn(name="enrollment_id")
-    private List<EnrollmentDetails> detailsList;
+    @ManyToOne(targetEntity = Course.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
+    private Course course;
+
+    @Column(nullable = false)
+    private String classroom;
 
     @Column(nullable = false)
     private boolean status = true;
