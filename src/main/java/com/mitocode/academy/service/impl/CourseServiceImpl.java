@@ -18,6 +18,13 @@ public class CourseServiceImpl implements ICourseService {
 
     @Override
     public Course save(Course course) throws Exception {
+        //Validate if course exists
+        Course currentCourse = repo.findByCourseName(course.getCourseName())
+                        .orElse(repo.findByAbbreviation(course.getAbbreviation())
+                        .orElse(null));
+        if (currentCourse != null) {
+            throw new RuntimeException("Course already exists.");
+        }
         return repo.save(course);
     }
 
@@ -30,13 +37,21 @@ public class CourseServiceImpl implements ICourseService {
         } else {
             throw new RuntimeException("Course not corresponds with id " + id + ".");
         }
-
     }
 
     @Override
     public List<Course> findAll() throws Exception {
         return repo.findAll();
     }
+
+    public List<Course> findAllActive() throws Exception {
+        return repo.findAllByStatus(true);
+    }
+
+    public List<Course> findAllInactive() throws Exception {
+        return repo.findAllByStatus(false);
+    }
+
 
     @Override
     public Course findById(Integer id) throws Exception {
@@ -48,4 +63,8 @@ public class CourseServiceImpl implements ICourseService {
         Course currentCourse = repo.findById(id).orElseThrow(()->new ModelNotFoundException("Course with id " + id + " not found."));
         repo.deleteById(id);
     }
+
+
+
+
 }

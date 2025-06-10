@@ -21,11 +21,11 @@ public class Course {
     private Integer id;
 
     @EqualsAndHashCode.Include
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 100, unique = true)
     private String courseName;
 
     @EqualsAndHashCode.Include
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 10, unique = true)
     private String abbreviation;
 
     @Column(nullable = false)
