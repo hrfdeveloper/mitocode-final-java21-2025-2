@@ -71,6 +71,12 @@ public class StudentController {
         return ResponseEntity.ok(new GenericResponse<>(200, "updated", List.of(convertToDto(student))));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<GenericResponse<Void>> delete(@PathVariable("id") Integer id) throws Exception {
+        studentService.delete(id);
+        return ResponseEntity.ok(new GenericResponse<>(200, "student-deleted", List.of()));
+    }
+
     private Student convertToModel(RequestStudentCreateDTO studentDTO) {
         return new Student(null,
                             studentDTO.firstName(),
