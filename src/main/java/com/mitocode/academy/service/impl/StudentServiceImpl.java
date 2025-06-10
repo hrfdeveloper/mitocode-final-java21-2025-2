@@ -8,6 +8,7 @@ import com.mitocode.academy.service.IStudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 
@@ -19,6 +20,13 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public Student save(Student student) throws Exception {
+        //Validate if student with same DNI already exists
+        Student currentStudent = repo.findByDNI(student.getDNI()).orElse(null);
+        if (currentStudent != null) {
+            System.out.print("Student exist: ");
+            System.out.println(currentStudent.toString());
+            throw new IllegalArgumentException("Student with DNI " + student.getDNI() + " already exists.");
+        }
         return repo.save(student);
     }
 
