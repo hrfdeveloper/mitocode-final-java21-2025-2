@@ -25,15 +25,15 @@ public class Enrollment {
     @Column(nullable = false)
     private LocalDateTime enrollmentDateTime;
 
-    @ManyToOne(targetEntity = Student.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Student.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id")
     private Student student;
 
-    @ManyToOne(targetEntity = Course.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Course.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     private String classroom;
 
     @Column(nullable = false)
