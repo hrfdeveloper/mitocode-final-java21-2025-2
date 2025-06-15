@@ -64,7 +64,9 @@ public class CourseServiceImpl implements ICourseService {
         repo.deleteById(id);
     }
 
-
-
+    @Override
+    public Course findByName(String courseName) throws Exception {
+        return repo.findByCourseName(courseName).orElseThrow(()->new ModelNotFoundException("Course with name " + courseName + " not found."));
+    }
 
 }
