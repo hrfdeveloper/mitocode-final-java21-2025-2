@@ -13,7 +13,7 @@ public record RequestCourseUpdateDTO(
         @NotEmpty(message = "courseName cannot be empty")
         @NotBlank(message = "courseName cannot be blank")
         @Length(min=3,max=100,message = "courseName length should be between 3 and 100")
-        @Pattern(regexp = "^[A-Z][a-zA-Z_0-9]+", message = "courseName should be alphanumeric")
+        @Pattern(regexp = "^[A-Z]+?[a-zA-Z_0-9\s]*", message = "courseName should be alphanumeric")
         String courseName,
         @NotNull(message = "abbreviation cannot be null")
         @NotEmpty(message = "abbreviation cannot be empty")
