@@ -31,7 +31,7 @@ public class Student {
     private String lastName;
 
     @EqualsAndHashCode.Include
-    @Column(nullable = false, length = 8)
+    @Column(nullable = false, length = 8, unique = true)
     private String DNI;
 
     @EqualsAndHashCode.Include
