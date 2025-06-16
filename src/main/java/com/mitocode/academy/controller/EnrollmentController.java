@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/enrollments")
@@ -52,17 +53,24 @@ public class EnrollmentController {
         });
         StringBuilder sb = new StringBuilder();
 
-        enrollments.forEach((e) -> {
-           // report.put(e.getCourse().getCourseName(),e.getStudent().getFirstName() + " " + e.getStudent().getLastName());
-           /* System.out.println(e.getCourse().getCourseName() + " -- " + e.getStudent().getFirstName() + " " + e.getStudent().getLastName());
-            sb.append(e.getCourse().getCourseName()).append(" -- ")
-              .append(e.getStudent().getFirstName())
-              .append(" ").append(e.getStudent().getLastName())
-              .append(System.lineSeparator());*/
-            report.put(e.getCourse().getCourseName(),new ArrayList<>());
+        Set<String> courses = enrollments.stream()
+                .map((e) -> e.getCourse().getCourseName())
+                .distinct()
+                .collect(Collectors.toSet());
+
+        courses.forEach((c) -> {
+            List<String> students = enrollments.stream()
+                    .filter((e)-> e.getCourse().getCourseName().equals(c))
+                    .map((e) -> e.getStudent().getFirstName() + " " + e.getStudent().getLastName())
+                    .toList();
+            report.put(c,students);
         });
 
-        System.out.println(report.toString());
+        report.forEach((course, students)->{
+            sb.append(course).append(System.lineSeparator());
+            students.forEach((s) -> sb.append("\t").append(s).append(System.lineSeparator()));
+        });
+        //System.out.println(sb.toString());
 
         return ResponseEntity.ok().body(sb.toString());
     }
